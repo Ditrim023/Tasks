@@ -50,7 +50,7 @@ public class PathFinder {
                 // find city by id and set it name
                 City currentCity = citiesMap.getCity(i);
                 String name = nextLine();
-                Util.checkName(name);
+                checkName(name);
                 currentCity.setName(name);
 //                and neighbors
                 printMessage(COUNT_OF_NEIGHBORS + name);
@@ -69,6 +69,7 @@ public class PathFinder {
             int countPaths = readInt();
             printMessage(SOURCE_DESTINATION);
             for (int i = 0; i < countPaths; ) {
+                //enter source and destination
                 String nameOfSourceAndDestination = nextLine();
                 String result = citiesMap.getDestinationFrom(nameOfSourceAndDestination);
                 printMessage(result);
@@ -107,5 +108,11 @@ public class PathFinder {
 
     private boolean checkExit(int countTests) {
         return countTests == 0;
+    }
+
+    private void checkName(String name) {
+        if (!name.matches("[a-z]+")) {
+            throw new InvalidDataException();
+        }
     }
 }
