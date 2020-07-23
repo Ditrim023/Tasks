@@ -1,6 +1,7 @@
 package com.tasks.cities;
 
 import com.tasks.cities.exceptions.InvalidDataException;
+import com.tasks.cities.models.City;
 
 import java.util.Scanner;
 
@@ -31,9 +32,9 @@ public class PathFinder {
                 int countCities = readInt();
                 // create cities in storage
                 citiesMap.createCities(countCities);
-                // set setting to every city in storage
+//                // set setting to every city in storage
                 fillCitiesStorage(countCities);
-                // calculate minimal distance
+//                // calculate minimal distance
                 findPathFromSourceToDestination();
                 countTests--;
                 exit = checkExit(countTests);
@@ -52,7 +53,7 @@ public class PathFinder {
                 String name = nextLine();
                 checkName(name);
                 currentCity.setName(name);
-//                and neighbors
+                // and neighbors
                 printMessage(COUNT_OF_NEIGHBORS + name);
                 int countNeighbors = readInt();
                 enterNeighborsAndDistance(currentCity, countNeighbors);
@@ -79,7 +80,6 @@ public class PathFinder {
             printMessage(WRONG_DATA);
         }
     }
-
 
     private void enterNeighborsAndDistance(City currentCity, int countNeighbors) {
         printMessage(ID_DISTANCE);

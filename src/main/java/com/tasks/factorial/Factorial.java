@@ -11,7 +11,6 @@ public class Factorial {
     private static final String WRONG = "Enter correct number,please";
     private Scanner scanner = new Scanner(System.in);
 
-
     public void run() {
         boolean exit = false;
         while (!exit) {
@@ -27,7 +26,7 @@ public class Factorial {
     }
 
     private void getSumDigitsFactorial(int number) {
-        if (number<0){
+        if (number < 0) {
             throw new NumberFormatException();
         }
         BigInteger fact = getFactorial(number);
@@ -61,5 +60,4 @@ public class Factorial {
     private String nextLine() {
         return scanner.nextLine();
     }
-
 }

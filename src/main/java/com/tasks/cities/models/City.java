@@ -1,4 +1,4 @@
-package com.tasks.cities;
+package com.tasks.cities.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,6 @@ public class City {
     public void addDestination(City destination, int distance) {
         neighbors.put(destination, distance);
     }
-
 
     public String getName() {
         return name;
@@ -56,13 +55,5 @@ public class City {
 
     public void addNeighbor(Map<City, Integer> neighbors) {
         this.neighbors = neighbors;
-    }
-
-    @Override
-    public String toString() {
-        return "City{" +
-                "name='" + name + '\'' +
-                ", neig=" + neighbors.size() +
-                '}';
     }
 }

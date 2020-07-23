@@ -1,6 +1,8 @@
 package com.tasks.cities;
 
 
+import com.tasks.cities.models.City;
+
 import java.util.*;
 
 public class Dijkstra {

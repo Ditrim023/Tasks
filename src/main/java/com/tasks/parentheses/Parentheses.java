@@ -11,10 +11,8 @@ public class Parentheses {
     private static final String WRONG = "Count of parentheses must be number and more than 0";
     private static final String PROCEED = "You want complete? Y for Yes, something else to continue";
     private static final String BRACKETS = "()";
-    private static final String COUNT = "Count parentheses - ";
 
     private Scanner scanner = new Scanner(System.in);
-
 
     public void run() {
         boolean exit = false;
@@ -33,26 +31,25 @@ public class Parentheses {
     private void countParentheses(int countVar) {
         List<String> expressions = new ArrayList<>();
         expressions.add(BRACKETS);
-        List<String> newList = new ArrayList<>();
+        List<String> tempList = new ArrayList<>();
         String newExpression;
-        int count = 1;
-        while (count < countVar) {
+        for (int j = 1; j < countVar; j++) {
             for (String expression : expressions) {
                 for (int i = 0; i < expression.length(); i++) {
                     // Create new expressions and insert in list
                     newExpression = expression.substring(0, i) + BRACKETS + expression.substring(i);
-                    if (!newList.contains(newExpression)){
-                        newList.add(newExpression);
+                    if (!tempList.contains(newExpression)) {
+                        tempList.add(newExpression);
                     }
                 }
             }
             // Save result before before next iteration
-            expressions = newList;
-            newList = new ArrayList<>();
-            count++;
+            expressions = tempList;
+            tempList = new ArrayList<>();
+
         }
         printMessage(expressions.toString());
-        printMessage(COUNT + expressions.size());
+
     }
 
     private boolean checkExit() {

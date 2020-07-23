@@ -1,7 +1,10 @@
 package com.tasks.cities;
 
+import com.tasks.cities.models.City;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Cities {
     private Map<Integer, City> citiesMap = new HashMap<>();
@@ -13,11 +16,9 @@ public class Cities {
 
     private City getCity(String name) {
         City result = null;
-        for (Map.Entry<Integer, City> entry : citiesMap.entrySet()) {
-            if (entry.getValue().getName().equals(name)) {
-                result = entry.getValue();
-                break;
-            }
+        Optional<City> city = citiesMap.values().stream().filter(v -> v.getName().equals(name)).findFirst();
+        if (city.isPresent()) {
+            result = city.get();
         }
         return result;
     }
@@ -28,7 +29,6 @@ public class Cities {
         }
         System.out.println(citiesMap.size());
     }
-
 
     public void fillDistanceToNeighbors(City currentCity, String neighborInfo) {
         String[] idAndDistance = neighborInfo.split(" ");
