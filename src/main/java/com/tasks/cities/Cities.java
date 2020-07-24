@@ -42,8 +42,4 @@ public class Cities {
         City destination = getCity(sourceAndDestination[1].trim());
         return pathFinder.calculateShortestPathFromSourceToDestination(source, destination);
     }
-
-    public Map<Integer, City> getCitiesMap() {
-        return citiesMap;
-    }
 }

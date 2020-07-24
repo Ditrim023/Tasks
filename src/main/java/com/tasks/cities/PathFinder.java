@@ -1,6 +1,5 @@
 package com.tasks.cities;
 
-import com.tasks.cities.exceptions.InvalidDataException;
 import com.tasks.cities.models.City;
 
 import java.io.IOException;
@@ -32,7 +31,6 @@ public class PathFinder {
         }
 
     }
-
 
     private String executeTest(String test) {
         String[] testArr = test.split("\n");
@@ -71,7 +69,7 @@ public class PathFinder {
                 deleteElement(countDelete, data);
                 enterNeighborsAndDistance(currentCity, countNeighbors, data);
                 deleteElement(countNeighbors, data);
-            } catch (NumberFormatException | InvalidDataException | ArrayIndexOutOfBoundsException e) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 printMessage(WRONG_DATA);
             }
         }
@@ -102,7 +100,7 @@ public class PathFinder {
 
     private void checkName(String name) {
         if (!name.matches("[a-z]+")) {
-            throw new InvalidDataException();
+            throw new NumberFormatException();
         }
     }
 
