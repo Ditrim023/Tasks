@@ -36,7 +36,6 @@ public class PathFinder {
                 fillCitiesStorage(countCities);
 //                // calculate minimal distance
                 findPathFromSourceToDestination();
-                printMessage(" ");
                 countTests--;
                 exit = checkExit(countTests);
             } catch (NumberFormatException e) {
