@@ -3,20 +3,16 @@ package com.tasks.cities;
 import com.tasks.cities.exceptions.InvalidDataException;
 import com.tasks.cities.models.City;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 public class PathFinder {
-    private static final String ENTER_COUNT_TESTS = "Enter count tests";
-    private static final String ENTER_COUNT_CITIES = "Enter count cities";
-    private static final String NAME_OF_CITY = "Enter name (which contain letter a,.,z)  for the city";
-    private static final String COUNT_OF_NEIGHBORS = "Enter count of neighbors for the city - ";
-    private static final String ID_DISTANCE = "Enter id neighbor and distance";
-    private static final String SOURCE_DESTINATION = "Enter name of source and destination cities";
-    private static final String COUNT_PATH = "Enter count path need to find";
     private static final String WRONG_DATA = "You enter incorrect data!";
-    private static final String NUMBER_TEST = "Test number ";
+    private FileReader fileReader = new FileReader();
+    private static final String INPUT_PATH = "src/main/resources/input.txt";
 
     private Cities citiesMap = new Cities();
     private Scanner scanner = new Scanner(System.in);
@@ -25,69 +21,62 @@ public class PathFinder {
         boolean exit = false;
         while (!exit) {
             try {
-                printMessage(ENTER_COUNT_TESTS);
-                int countTests = readInt();
-                printMessage(NUMBER_TEST + countTests);
-                printMessage(ENTER_COUNT_CITIES);
-                int countCities = readInt();
+                List<String> inputData = fileReader.read(INPUT_PATH);
+                int countTests = readInt(inputData.get(0));
+                int countCities = readInt(inputData.get(1));
+//                remove already processed elements
+                deleteElement(2, inputData);
                 // create cities in storage
                 citiesMap.createCities(countCities);
 //                // set setting to every city in storage
-                fillCitiesStorage(countCities);
+                fillCitiesStorage(countCities, inputData);
 //                // calculate minimal distance
-                findPathFromSourceToDestination();
+                int countPath = readInt(inputData.get(0));
+                String result = findPathFromSourceToDestination(countPath, inputData);
+                printMessage(result);
+//                deleteElement(countPath + 1, inputData);
                 countTests--;
                 exit = checkExit(countTests);
-            } catch (NumberFormatException e) {
+            } catch (NullPointerException | IOException | NumberFormatException e) {
+                exit = true;
                 printMessage(WRONG_DATA);
             }
         }
     }
 
-    private void fillCitiesStorage(int countCities) {
-        for (int i = 1; i <= countCities; ) {
+    private String findPathFromSourceToDestination(int countPath, List<String> data) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= countPath; i++) {
+            sb.append(citiesMap.getDestinationFrom(data.get(i)) + "\n");
+        }
+        return sb.toString();
+    }
+
+    private void fillCitiesStorage(int countCities, List<String> data) {
+        int countDelete = 2;
+        for (int i = 1; i <= countCities; i++) {
             try {
-                printMessage(NAME_OF_CITY + i);
                 // find city by id and set it name
                 City currentCity = citiesMap.getCity(i);
-                String name = nextLine();
+                String name = data.get(0);
                 checkName(name);
                 currentCity.setName(name);
                 // and neighbors
-                printMessage(COUNT_OF_NEIGHBORS + name);
-                int countNeighbors = readInt();
-                enterNeighborsAndDistance(currentCity, countNeighbors);
-                i++;
+                int countNeighbors = readInt(data.get(1));
+                deleteElement(countDelete, data);
+                enterNeighborsAndDistance(currentCity, countNeighbors, data);
+                deleteElement(countNeighbors, data);
             } catch (NumberFormatException | InvalidDataException | ArrayIndexOutOfBoundsException e) {
                 printMessage(WRONG_DATA);
             }
         }
     }
 
-    private void findPathFromSourceToDestination() {
-        try {
-            printMessage(COUNT_PATH);
-            int countPaths = readInt();
-            printMessage(SOURCE_DESTINATION);
-            for (int i = 0; i < countPaths; ) {
-                //enter source and destination
-                String nameOfSourceAndDestination = nextLine();
-                String result = citiesMap.getDestinationFrom(nameOfSourceAndDestination);
-                printMessage(result);
-                i++;
-            }
-        } catch (NumberFormatException | NullPointerException | ArrayIndexOutOfBoundsException e) {
-            printMessage(WRONG_DATA);
-        }
-    }
-
-    private void enterNeighborsAndDistance(City currentCity, int countNeighbors) {
-        printMessage(ID_DISTANCE);
-        for (int j = 0; j < countNeighbors; ) {
+    private void enterNeighborsAndDistance(City currentCity, int countNeighbors, List<String> data) {
+        for (int j = 0; j < countNeighbors; j++) {
             try {
-                String idAndDistance = nextLine();
+                String idAndDistance = data.get(j);
                 citiesMap.fillDistanceToNeighbors(currentCity, idAndDistance);
-                j++;
             } catch (NumberFormatException e) {
                 printMessage(WRONG_DATA);
             }
@@ -98,12 +87,8 @@ public class PathFinder {
         System.out.println(message);
     }
 
-    private int readInt() {
-        return parseInt(nextLine());
-    }
-
-    private String nextLine() {
-        return scanner.nextLine();
+    private int readInt(String countTest) {
+        return parseInt(countTest);
     }
 
     private boolean checkExit(int countTests) {
@@ -113,6 +98,12 @@ public class PathFinder {
     private void checkName(String name) {
         if (!name.matches("[a-z]+")) {
             throw new InvalidDataException();
+        }
+    }
+
+    private void deleteElement(int count, List<String> data) {
+        for (int i = 0; i < count; i++) {
+            data.remove(0);
         }
     }
 }

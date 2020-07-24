@@ -27,7 +27,6 @@ public class Cities {
         for (int i = 1; i <= countCities; i++) {
             citiesMap.put(i, new City());
         }
-        System.out.println(citiesMap.size());
     }
 
     public void fillDistanceToNeighbors(City currentCity, String neighborInfo) {
@@ -39,9 +38,12 @@ public class Cities {
 
     public String getDestinationFrom(String nameOfSourceAndDestination) {
         String[] sourceAndDestination = nameOfSourceAndDestination.split(" ");
-        City source = getCity(sourceAndDestination[0]);
-        City destination = getCity(sourceAndDestination[1]);
+        City source = getCity(sourceAndDestination[0].trim());
+        City destination = getCity(sourceAndDestination[1].trim());
         return pathFinder.calculateShortestPathFromSourceToDestination(source, destination);
     }
 
+    public Map<Integer, City> getCitiesMap() {
+        return citiesMap;
+    }
 }
