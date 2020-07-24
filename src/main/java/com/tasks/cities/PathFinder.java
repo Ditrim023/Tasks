@@ -4,6 +4,8 @@ import com.tasks.cities.exceptions.InvalidDataException;
 import com.tasks.cities.models.City;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,30 +20,33 @@ public class PathFinder {
     private Scanner scanner = new Scanner(System.in);
 
     public void run() {
-        boolean exit = false;
-        while (!exit) {
-            try {
-                List<String> inputData = fileReader.read(INPUT_PATH);
-                int countTests = readInt(inputData.get(0));
-                int countCities = readInt(inputData.get(1));
-//                remove already processed elements
-                deleteElement(2, inputData);
-                // create cities in storage
-                citiesMap.createCities(countCities);
-//                // set setting to every city in storage
-                fillCitiesStorage(countCities, inputData);
-//                // calculate minimal distance
-                int countPath = readInt(inputData.get(0));
-                String result = findPathFromSourceToDestination(countPath, inputData);
-                printMessage(result);
-//                deleteElement(countPath + 1, inputData);
-                countTests--;
-                exit = checkExit(countTests);
-            } catch (NullPointerException | IOException | NumberFormatException e) {
-                exit = true;
-                printMessage(WRONG_DATA);
+        try {
+            List<String> tests = fileReader.read(INPUT_PATH);
+            int countTests = tests.size();
+            for (int i = 0; i < countTests; i++) {
+                printMessage(executeTest(tests.get(i)));
             }
+
+        } catch (IOException | NullPointerException | NumberFormatException e) {
+            printMessage(WRONG_DATA);
         }
+
+    }
+
+
+    private String executeTest(String test) {
+        String[] testArr = test.split("\n");
+        List<String> dataFromTest = new LinkedList<>(Arrays.asList(testArr));
+        int countCities = readInt(dataFromTest.get(0));
+//                remove already processed elements
+        deleteElement(1, dataFromTest);
+        // create cities in storage
+        citiesMap.createCities(countCities);
+//                // set setting to every city in storage
+        fillCitiesStorage(countCities, dataFromTest);
+//                // calculate minimal distance
+        int countPath = readInt(dataFromTest.get(0));
+        return findPathFromSourceToDestination(countPath, dataFromTest);
     }
 
     private String findPathFromSourceToDestination(int countPath, List<String> data) {

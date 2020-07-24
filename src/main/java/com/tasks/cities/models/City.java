@@ -56,4 +56,11 @@ public class City {
     public void addNeighbor(Map<City, Integer> neighbors) {
         this.neighbors = neighbors;
     }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
